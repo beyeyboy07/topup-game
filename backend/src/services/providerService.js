@@ -16,6 +16,10 @@ export const getProviderById = async (id) => {
 
     const provider = await Provider.findByPk(id);
 
+    if(!provider){
+        return null;
+    }
+
     return provider;
 
 }
