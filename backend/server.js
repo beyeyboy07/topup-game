@@ -8,6 +8,7 @@ import { Game } from './src/models/index.js';
 import gameRoutes from './src/routes/gameRoutes.js';
 import productRoutes  from './src/routes/productRoutes.js';
 import providerRoutes from './src/routes/providerRoutes.js';
+import orderRoutes from './src/routes/orderRoutes.js'
 import authRoutes from './src/routes/authRoutes.js'
 
 const app = express();
@@ -22,6 +23,7 @@ app.use('/api/games', gameRoutes);
 app.use('/api/product', productRoutes);
 app.use('/api/provider', providerRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/orders', orderRoutes);
 
 
 app.get('/', (req, res) => {
