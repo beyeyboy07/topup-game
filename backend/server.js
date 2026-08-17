@@ -10,6 +10,7 @@ import productRoutes  from './src/routes/productRoutes.js';
 import providerRoutes from './src/routes/providerRoutes.js';
 import orderRoutes from './src/routes/orderRoutes.js'
 import authRoutes from './src/routes/authRoutes.js'
+import adminRoutes from './src/routes/adminRoutes.js';
 
 const app = express();
 dotenv.config();
@@ -24,7 +25,10 @@ app.use('/api/product', productRoutes);
 app.use('/api/provider', providerRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/orders', orderRoutes);
-
+app.use(
+    '/api/admin',
+    adminRoutes
+);
 
 app.get('/', (req, res) => {
     res.json({

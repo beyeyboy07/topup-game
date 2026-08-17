@@ -52,56 +52,62 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
 
     try {
-        
-        const {email, password} = req.body;
 
-        //validasi input
-        if(!email || !password){
-            return res.status(400).json({
-                success: true,
-                message: 'Email or Password are required'
-            })
-        }
-
-        // jalankan proses login di service
-
-        const user = await loginUser(
+        // Ambil data dari body
+        const {
             email,
             password
-        )
+        } = req.body;
 
-        res.json({
+
+        // Validasi input
+        if (!email || !password) {
+
+            return res.status(400).json({
+
+                success: false,
+
+                message: 'Email and password are required'
+
+            });
+
+        }
+
+
+        // Panggil service login
+        const result = await loginUser(
+            email,
+            password
+        );
+
+
+        // Response berhasil
+        return res.json({
+
             success: true,
-            message: 'Login succesfully',
-            data: user
+
+            message: 'Login successful',
+
+            data: result
+
         });
-        
+
 
     } catch (error) {
 
         console.error(error);
 
-        if(error.message == 'Invalid email or password'){
+        return res.status(401).json({
 
-            return res.status(401).json({
-                success: false,
-                message: error.message
-            });
-        }
+            success: false,
 
-        if(error.message == 'User still active'){
+            message: error.message
 
-            return res.status(403).json({
-                success: false,
-                message: error.message
-            });
-            
-        }
-        
+        });
+
     }
 
-}
-
+};
 
 export const getMe = async (req, res) => {
 

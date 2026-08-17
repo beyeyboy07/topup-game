@@ -85,7 +85,12 @@ const Order = sequelize.define(
         completed_at: {
             type: DataTypes.DATE,
             allowNull: true
-        }
+        },
+
+        provider_transaction_id: {
+            type: DataTypes.STRING(100),
+            allowNull: true
+        },
     },
     {
         tableName: 'orders',

@@ -1,7 +1,14 @@
 import express from 'express';
 
-import { create, getOrder, getOrders, pay } from "../controllers/orderController.js";
+import { create, getOrder, getOrders, pay, process } from "../controllers/orderController.js";
 import { authenticate } from "../middlewares/authMiddleware.js";
+import {
+    authorizeAdmin
+} from '../middlewares/adminMiddleware.js';
+
+import {
+    getOrdersAdmin
+} from '../controllers/orderController.js';
 
 const router = express.Router();
 
@@ -26,4 +33,28 @@ router.post(
     authenticate,
     pay
 );
+
+// ========================================
+// PROCESS ORDER
+// ========================================
+//
+// Order harus sudah PAID.
+//
+// Contoh:
+// POST /api/orders/1/process
+
+router.post(
+    '/:id/process',
+    authenticate,
+    process
+);
+
+router.get(
+    '/admin/all',
+    authenticate,
+    authorizeAdmin,
+    getOrdersAdmin
+);
+
+
 export default router;
