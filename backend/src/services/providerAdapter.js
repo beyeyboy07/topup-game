@@ -1,15 +1,5 @@
-/**
- * Adapter untuk komunikasi dengan provider.
- *
- * Tujuan adapter:
- * - Menentukan format request ke provider
- * - Mengirim request
- * - Mengubah response provider menjadi
- *   format yang dipahami sistem kita
- *
- * Dengan cara ini orderService tidak perlu
- * mengetahui detail API setiap provider.
- */
+import axios from 'axios';
+
 export const sendTopup = async ({
     provider,
     product,
@@ -19,42 +9,58 @@ export const sendTopup = async ({
 }) => {
 
     // ========================================
-    // Data yang akan dikirim ke provider
+    // Payload
     // ========================================
 
     const payload = {
-
         sku: product.sku,
-
         player_id: player_id,
-
         server_id: server_id,
-
         reference: order_number
-
     };
 
 
     console.log('=== PROVIDER REQUEST ===');
 
     console.log('Provider:', provider.name);
-
     console.log('URL:', provider.base_url);
-
     console.log('Payload:', payload);
 
 
     // ========================================
-    // SEMENTARA SIMULASI
+    // Request ke provider
+    // ========================================
+
+    const response = await axios.post(
+        `${provider.base_url}/topup`,
+        payload,
+        {
+            headers: {
+                'Authorization': `Bearer ${provider.api_key}`,
+                'Content-Type': 'application/json'
+            },
+
+            timeout: 30000
+        }
+    );
+
+
+    console.log('=== PROVIDER RAW RESPONSE ===');
+    console.log(response.data);
+
+
+    // ========================================
+    // Normalisasi response
     // ========================================
 
     return {
-        success: true,
+        success: response.data.success,
 
         transaction_id:
-            `PROV-${Date.now()}`,
+            response.data.transaction_id,
 
-        message: 'Topup successful'
+        message:
+            response.data.message
     };
 
 };
